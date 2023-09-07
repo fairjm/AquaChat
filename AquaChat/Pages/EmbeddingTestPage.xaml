@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AquaChat.Pages.EmbeddingTestPage"
+             Title="EmbeddingTestPage">
+    <Grid 
+        RowSpacing="5"
+        RowDefinitions="*,auto,10,*,auto,*,auto"
+        Padding="20,0,20,10">
+        <Editor 
+            Grid.Row="0"
+                x:Name="InputEditor"
+                />
+        <Button
+            Grid.Row="1"
+            HeightRequest="20"
+                Text="Add Embedding"
+                Clicked="Button_OnClicked" />
+        <BoxView 
+            Grid.Row="2"
+            HeightRequest="1" Color="Gray"/>
+
+        <Entry 
+            Grid.Row="3"
+            x:Name="SearchEntry"
+            Placeholder="search something" 
+               />
+        <Button
+            Grid.Row="4"
+            Text="Search"
+            Clicked="SearchButton_OnClicked"
+        />
+
+        <Editor
+            Grid.Row="5"
+            x:Name="OutputEditor"
+            IsEnabled="False"
+        />
+
+        <Button 
+            Grid.Row="6"
+            Text="ClearAll" Clicked="ClearAll_OnClicked" />
+    </Grid>
+</ContentPage>

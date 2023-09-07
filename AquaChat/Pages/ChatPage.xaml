@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AquaChat.Pages.ChatPage"
+             xmlns:templates="clr-namespace:AquaChat.Pages.Templates"
+             xmlns:vm="clr-namespace:AquaChat.ViewModels"
+             xmlns:model="clr-namespace:AquaChat.Models"
+             x:DataType="vm:ChatPageViewModel"
+             Title="ChatPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="RecentChatCollectionStyle" TargetType="CollectionView">
+                <Setter Property="Margin" Value="12, 24, 12, 0" />
+            </Style>
+
+            <Style x:Key="RecentChatAdornerStyle" TargetType="BoxView">
+                <Setter Property="Color" Value="White" />
+                <Setter Property="CornerRadius" Value="18, 18, 0, 0" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <Grid RowDefinitions="auto,*" RowSpacing="10">
+        <Button 
+            Grid.Row="0"
+            Text="New Chat"
+            Margin="10,0,10,0"
+            CornerRadius="10"
+            />
+
+        <Grid Grid.Row="1" RowDefinitions="*">
+            <BoxView
+            Style="{StaticResource RecentChatAdornerStyle}"/>
+            <CollectionView
+                x:Name="ChatCollectionView"
+                VerticalScrollBarVisibility="Default"
+                Grid.Row="0"
+                ItemsSource="{Binding Chats}" 
+                Style="{StaticResource RecentChatCollectionStyle}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <templates:ChatItemTemplate />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+    </Grid>
+</ContentPage>

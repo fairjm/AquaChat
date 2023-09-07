@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AquaChat.Pages.SettingPage"
+             xmlns:vm="using:AquaChat.ViewModels"
+             Title="Settings"
+             x:DataType="vm:SettingPageViewModel">
+    <Grid ColumnDefinitions="200,*" RowDefinitions="auto,auto,auto,auto,auto,20,auto" RowSpacing="5" Padding="10,0,0,10" HorizontalOptions="Center">
+        <Label 
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="Host Prefix" />
+
+        <Entry 
+            Grid.Row="0"
+            Grid.Column="1"
+            WidthRequest="300"
+            HorizontalOptions="Start"
+            Text="{Binding OpenAiPrefix}"
+            />
+
+        <Label 
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="Secret" />
+
+        <Entry 
+            Grid.Row="1"
+            Grid.Column="1"
+            WidthRequest="200"
+            IsPassword="True"
+            HorizontalOptions="Start"
+            Text="{Binding Secret}"
+        />
+
+        <Label 
+            Grid.Row="2"
+            Grid.Column="0"
+            Text="Model" />
+
+        <Entry 
+            Grid.Row="2"
+            Grid.Column="1"
+            WidthRequest="300"
+            HorizontalOptions="Start"
+            Text="{Binding Model}"
+        />
+
+        <Button 
+            Text="Save"
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Command="{Binding SaveConfigCommand}"
+            />
+        <Button 
+            Text="Cancel"
+            Grid.Row="4"
+            Grid.ColumnSpan="2"
+            Command="{Binding RefreshCommand}"
+        />
+
+        <BoxView Grid.Row="5" 
+                 Grid.ColumnSpan="2" 
+                 Color="Gray" 
+                 HeightRequest="1" 
+                 HorizontalOptions="Fill"/>
+
+        <Button 
+            Text="Embedding Test"
+            Grid.Row="6"
+            Grid.ColumnSpan="2"
+            Clicked="Embedding_OnClicked"
+            />
+
+    </Grid>
+</ContentPage>

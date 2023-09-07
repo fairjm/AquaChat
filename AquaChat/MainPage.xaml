@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:AquaChat.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="AquaChat.MainPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+            <viewModel:MainPageViewModel />
+        </ContentPage.BindingContext>
+        <Grid RowDefinitions="10,*,auto,*,auto,auto,10" RowSpacing="10" Padding="10,0,10,0">
+            <Editor 
+                Grid.Row="1"
+                Text="{Binding InputText}"
+                IsTextPredictionEnabled="False"
+            />
+
+            <BoxView 
+                Grid.Row="2"
+                Color="AliceBlue"
+                />
+
+            <Editor 
+                Grid.Row="3"
+                Text="{Binding OutputText}"
+                IsReadOnly="True"
+            />
+
+            <BoxView 
+                Grid.Row="4"
+                Color="AliceBlue"
+            />
+
+            <Button 
+                Grid.Row="5"
+                Text="Summary"
+                Command="{Binding SummaryTaskCommand}"
+                IsEnabled="{Binding Pending, Converter={StaticResource InvertedBoolConverter}}"
+            />
+
+
+    </Grid>
+
+</ContentPage>

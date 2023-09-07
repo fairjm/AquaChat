@@ -1,0 +1,62 @@
+﻿@page "/"
+@using AquaChat.Services
+@using CommunityToolkit.Maui.Alerts
+@inject MessageService MessageService
+@inject ChatMessageState State
+
+<script>
+    function toggleQuote(buttonElement, quoteId) {
+        const quoteElement = document.getElementById(quoteId);
+        if (quoteElement.style.display === 'none') {
+            quoteElement.style.display = 'block';
+            buttonElement.innerText = '关闭引用';
+        } else {
+            quoteElement.style.display = 'none';
+            buttonElement.innerText = '展开引用';
+        }
+    }
+</script>
+
+    <!-- 聊天窗口容器 -->
+    <div class="flex-1 overflow-y-auto p-4">
+        <!-- 带有引用的消息 -->
+        <div class="mb-2 p-2 rounded-lg bg-white text-black w-full shadow-lg relative backdrop-blur">
+            <button onclick="toggleQuote(this, 'quote1')"
+                    class="block mb-1 top-1 right-1 bg-black text-white px-2 py-1 rounded opacity-75">
+                展开引用
+            </button>
+            <div id="quote1" class="mb-2 p-2 border-l-4 border-gray-400 bg-gray-200 text-black italic"
+                 style="display: none;">
+                这是被引用的文本内容。
+            </div>
+            这是回复引用的消息内容。
+        </div>
+
+        <!-- 其他消息 -->
+        <div class="mb-2 p-2 rounded-lg bg-gray-100 text-black w-full shadow-lg backdrop-blur">
+            你好！这是另一条消息。
+        </div>
+    </div>
+
+    <!-- 底部输入框容器 -->
+    <div class="absolute bottom-5 left-0 right-0 p-2 bg-white rounded-xl shadow-xl mx-4 backdrop-blur">
+        <div class="flex items-center border rounded-xl overflow-hidden">
+            <textarea id="input-text" class="flex-1 p-2 resize-none outline-none focus:ring focus:ring-gray-400"
+                      rows="1" placeholder="输入消息..."></textarea>
+            <button class="bg-black text-white rounded-xl px-4 py-2 shadow-md mr-2 opacity-75">
+                ➤
+            </button>
+        </div>
+    </div>
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if (State.CurrentChat is null)
+        {
+            await Toast.Make("current chat not exists").Show();
+        }
+    }
+}
