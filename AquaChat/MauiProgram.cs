@@ -1,4 +1,5 @@
 ﻿using AquaChat.Databases;
+using AquaChat.Models;
 using AquaChat.Pages;
 using AquaChat.Services;
 using AquaChat.Utils;
@@ -44,7 +45,15 @@ public static class MauiProgram
     public static MauiAppBuilder RegisterDateBases(this MauiAppBuilder mauiAppBuilder)
     {
         SQLiteAsyncConnection connection = new(Constants.DatabasePath, Constants.Flags);
-        mauiAppBuilder.Services.AddSingleton<SQLiteAsyncConnection>(connection);
+        mauiAppBuilder.Services.AddSingleton(connection);
+        mauiAppBuilder.Services.AddSingleton<ChatDao>();
+        mauiAppBuilder.Services.AddSingleton<ChatConfigDao>();
+        mauiAppBuilder.Services.AddSingleton<MessageDao>();
+
+        connection.CreateTableAsync<Chat>();
+        connection.CreateTableAsync<ChatConfig>();
+        connection.CreateTableAsync<Message>();
+
         return mauiAppBuilder;
     }
 

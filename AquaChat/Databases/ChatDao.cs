@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using AquaChat.Models;
 
 namespace AquaChat.Databases;
@@ -39,28 +38,19 @@ public class ChatDao
 
     public async Task DeleteAsync(long id)
     {
-        await _connection.DeleteAsync(id);
+        await _connection.DeleteAsync<Chat>(id);
     }
 
-    public async Task UpdateTitle(long id, string title)
+    public async Task Update(long id, Action<Chat> updateAction)
     {
+        
         var chat = await _connection.GetAsync<Chat>(id);
         if (chat is null)
         {
             return;
         }
-        chat.Title = title;
+        updateAction.Invoke(chat);
         await _connection.UpdateAsync(chat);
     }
 
-    public async Task UpdateLastMessage(long id, string lastMessage)
-    {
-        var chat = await _connection.GetAsync<Chat>(id);
-        if (chat is null)
-        {
-            return;
-        }
-        chat.LastMessage = lastMessage;
-        await _connection.UpdateAsync(chat);
-    }
 }

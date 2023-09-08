@@ -5,17 +5,17 @@ namespace AquaChat.Models;
 
 public partial class Message : ObservableObject
 {
-    public static readonly int TypeAi = 0;
-    public static readonly int TypeHuman = 1;
-    public static readonly int TypeSystem = 2;
+    public const int TypeAi = 0;
+    public const int TypeHuman = 1;
+    public const int TypeSystem = 2;
 
     [ObservableProperty]
     [property: PrimaryKey]
     [property: AutoIncrement]
-    private int _id;
+    private long _id;
 
     [ObservableProperty]
-    private int _chatId;
+    private long _chatId;
 
     [ObservableProperty] private int _messageType;
 
@@ -24,6 +24,9 @@ public partial class Message : ObservableObject
 
     [ObservableProperty]
     private string? _referenceContent;
+
+    [ObservableProperty]
+    private string? _extraContent;
 
     [ObservableProperty]
     private DateTime? _created;

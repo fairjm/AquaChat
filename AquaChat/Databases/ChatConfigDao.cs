@@ -32,12 +32,7 @@ public class ChatConfigDao
 
     public async Task DeleteByChatId(long chatId)
     {
-        var chatConfig = await GetByChatId(chatId);
-        if (chatConfig is null)
-        {
-            return;
-        }
-        await _connection.DeleteAsync(chatConfig.Id);
+        await _connection.ExecuteAsync("delete from chat_config where chat_id=?", chatId);
     }
 
 }
