@@ -19,9 +19,19 @@ public class ChatService
         _messageDao = messageDao;
     }
 
+    public async Task<Chat> NewChat()
+    {
+        return await _chatDao.CreateNewItem();
+    }
+
     public async Task<List<Chat>> ListChatsAsync()
     {
         return await _chatDao.ListChatsAsync();
+    }
+
+    public async Task<List<Message>> ListChatMessages(long chatId)
+    {
+        return await _messageDao.ListMessageByChatIdAsync(chatId);
     }
 
     public async Task DeleteChat(long chatId)
@@ -54,17 +64,11 @@ public class ChatService
         return chatConfig;
     }
 
-    public async Message ChatResponse(long chatId, string userInput)
+    public async Task<Message> ChatResponse(long chatId, string userInput)
     {
         var chatConfig = await GetChatConfig(chatId);
 
-        var kernel = SemanticKernelHolder.GetKernel();
-
-        if (kernel == null)
-        {
-            throw new InvalidOperationException("check openai settings");
-        }
-
+        var kernel = SemanticKernelHolder.GetKernel() ?? throw new InvalidOperationException("check openai settings");
 
         const string skPrompt = @"
 ChatBot can have a conversation with you about any topic.
@@ -134,7 +138,17 @@ ChatBot:";
             ExtraContent = null,
             Created = DateTime.Now
         };
+        Message humanMessage = new Message
+        {
+            ChatId = chatId,
+            MessageType = Message.TypeHuman,
+            Content = userInput,
+            ReferenceContent = null,
+            ExtraContent = null,
+            Created = DateTime.Now
+        };
 
+        await _messageDao.SaveNewMessage(humanMessage);
         return await _messageDao.SaveNewMessage(message);
     }
 }

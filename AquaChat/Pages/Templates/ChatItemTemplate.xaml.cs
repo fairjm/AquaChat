@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using AquaChat.Models;
 using CommunityToolkit.Maui.Alerts;
 
@@ -23,5 +24,11 @@ public partial class ChatItemTemplate : ContentView
             { "Chat", item }
         };
         await Shell.Current.GoToAsync(nameof(ChatMessagePage), dictionary);
+    }
+
+    private void OnDeleteSwipeItemInvoked(object? sender, EventArgs e)
+    {
+        var chat = (sender as SwipeItem)?.BindingContext as Chat;
+        Debug.WriteLine($"delete chat:{chat}");
     }
 }

@@ -22,7 +22,7 @@ public class ChatConfigDao
     {
         return await _connection.Table<ChatConfig>()
             .Where(e => e.ChatId == chatId)
-            .FirstAsync();
+            .FirstOrDefaultAsync();
     }
 
     public async Task SaveOrReplaceConfig(ChatConfig chatConfig)
@@ -32,7 +32,7 @@ public class ChatConfigDao
 
     public async Task DeleteByChatId(long chatId)
     {
-        await _connection.ExecuteAsync("delete from chat_config where chat_id=?", chatId);
+        await _connection.ExecuteAsync("delete from ChatConfig where chatId=?", chatId);
     }
 
 }

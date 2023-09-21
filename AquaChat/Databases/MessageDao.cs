@@ -37,12 +37,12 @@ public class MessageDao
     public async Task<Message> SaveNewMessage(Message message)
     {
         var id = await _connection.InsertAsync(message);
-        return await _connection.GetAsync<Message>(id);
+        return await _connection.GetAsync<Message>(message.Id);
     }
 
     public async Task DeleteMessagesByChatId(long chatId)
     {
-        await _connection.ExecuteAsync("delete from message where chat_id=?", chatId);
+        await _connection.ExecuteAsync("delete from Message where chatId=?", chatId);
     }
 
 }

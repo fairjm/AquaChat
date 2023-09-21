@@ -32,43 +32,52 @@
         </ResourceDictionary>
     </ContentView.Resources>
 
-    <StackLayout HeightRequest="90">
-        <Frame CornerRadius="15" HeightRequest="80" Padding="0">
-            <Grid ColumnDefinitions="*, Auto" Padding="20,10,10,0">
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer 
+    <!-- can't add swipeView in collectionView https://github.com/dotnet/maui/issues/8168 -->
+    <!--<SwipeView>
+        <SwipeView.LeftItems>
+            <SwipeItems>
+                <SwipeItem Text="Delete"
+                       BackgroundColor="LightPink"
+                       Invoked="OnDeleteSwipeItemInvoked" />
+            </SwipeItems>
+        </SwipeView.LeftItems>-->
+        <StackLayout HeightRequest="90">
+            <Frame CornerRadius="15" HeightRequest="80" Padding="0">
+                <Grid ColumnDefinitions="*, Auto" Padding="20,10,10,0">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer 
                         Tapped="OnItemTapped"  
                         NumberOfTapsRequired="1" />
-                </Grid.GestureRecognizers>
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="PointerOver">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="#80E0E0E0" />
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Normal">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="#20E0E0E0" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-                <StackLayout Grid.Row="0">
-                    <Label        
+                    </Grid.GestureRecognizers>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#80E0E0E0" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#20E0E0E0" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <StackLayout Grid.Row="0">
+                        <Label        
                     Text="{Binding Title}"
                     Style="{StaticResource NameTextStyle}"/>
-                    <Label         
+                        <Label         
                     Text="{Binding LastMessage}"
                     Style="{StaticResource MessageTextStyle}"/>
-                </StackLayout>
-                <Label 
+                    </StackLayout>
+                    <Label 
                 Grid.Row="0"
                 Grid.Column="1"
                 Text="{Binding Created}"
                 Style="{StaticResource TimeTextStyle}"/>
-            </Grid>
-        </Frame>
-    </StackLayout>
-
+                </Grid>
+            </Frame>
+        </StackLayout>
+    <!--</SwipeView>-->
 </ContentView>

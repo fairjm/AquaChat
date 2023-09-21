@@ -538,6 +538,10 @@ video {
     position: absolute;
 }
 
+.fixed {
+    position: fixed;
+}
+
 .relative {
     position: relative;
 }
@@ -569,6 +573,10 @@ video {
 
 .mb-2 {
     margin-bottom: 0.5rem;
+}
+
+.mb-16 {
+    margin-bottom: 4rem;
 }
 
 .mr-2 {

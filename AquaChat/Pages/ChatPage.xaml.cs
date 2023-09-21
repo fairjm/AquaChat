@@ -10,12 +10,16 @@ public partial class ChatPage : ContentPage
 {
     private ChatPageViewModel _vm;
     public ChatPage(ChatPageViewModel vm)
-    {
-        vm.Refresh();
+    { 
         Debug.WriteLine("ChatPage init");
         InitializeComponent();
         this._vm = vm;
         this.BindingContext = _vm;
     }
 
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _vm.Refresh();
+    }
 }
