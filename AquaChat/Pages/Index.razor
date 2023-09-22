@@ -2,26 +2,38 @@
 @using AquaChat.Services
 @using CommunityToolkit.Maui.Alerts
 @using AquaChat.Models
+@using Markdig
+@using Markdig.Prism
 @inject ChatService ChatService
 @inject ChatMessageState State
+@inject IJSRuntime JS
 
-<script>
-    function toggleQuote(buttonElement, quoteId) {
-        const quoteElement = document.getElementById(quoteId);
-        if (quoteElement.style.display === 'none') {
-            quoteElement.style.display = 'block';
-            buttonElement.innerText = 'Close';
-        } else {
-            quoteElement.style.display = 'none';
-            buttonElement.innerText = 'Open';
-        }
+<style>
+    #btnTop {
+        position: fixed;
+        right: 1rem;
+        bottom: 7rem;
+        z-index: 99;
     }
-</script>
+
+    #btnBottom {
+        position: fixed;
+        right: 1rem;
+        bottom: 5rem;
+        z-index: 99;
+    }
+
+    .oi {
+        font-size: 1.5rem;
+        color: gray; 
+    }
+</style>
 
 <!-- 聊天窗口容器 -->
 <div class="flex-1 overflow-y-auto p-4 mb-16">
-    
-    @foreach(var item in Messages) {
+
+    @foreach (var item in Messages)
+    {
         if (item.ReferenceContent is not null)
         {
             <!-- 带有引用的消息 -->
@@ -34,20 +46,18 @@
                      style="display: none;">
                     @item.ReferenceContent
                 </div>
-                @item.Content
+                @((MarkupString)Markdown.ToHtml(item.Content ?? "", MarkdownPipeline))
             </div>
         }
         else
         {
-            <!-- 其他消息 -->
             <div class="mb-2 p-2 rounded-lg bg-gray-100 text-black w-full shadow-lg backdrop-blur">
-                @item.Content
+                @((MarkupString)Markdown.ToHtml(item.Content ?? "", MarkdownPipeline))
             </div>
         }
     }
 </div>
 
-<!-- 底部输入框容器 -->
 <div class="fixed bottom-5 left-0 right-0 p-2 bg-white rounded-xl shadow-xl mx-4 backdrop-blur">
     <div class="flex items-center border rounded-xl overflow-hidden">
         <textarea id="input-text" class="flex-1 p-2 resize-none outline-none focus:ring focus:ring-gray-400"
@@ -58,10 +68,63 @@
     </div>
 </div>
 
+<button id="btnTop"><span class="oi oi-caret-top"></span></button>
+<button id="btnBottom" @onclick="GoToBottom"><span class="oi oi-caret-bottom"></span> </button>
+
+<script>
+
+    // 获取按钮元素
+    const btnTop = document.getElementById('btnTop');
+    const btnBottom = document.getElementById('btnBottom');
+
+    // 滚动事件处理
+    window.addEventListener('scroll', function () {
+        // 根据滚动位置显示/隐藏按钮
+        if (document.documentElement.scrollTop > 200) {
+            btnTop.style.display = 'block';
+        } else {
+            btnTop.style.display = 'none';
+        }
+
+        if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight) {
+            btnBottom.style.display = 'block';
+        } else {
+            btnBottom.style.display = 'none';
+        }
+
+    });
+
+    btnTop.addEventListener('click', function () {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    });
+
+    function goToBottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function toggleQuote(buttonElement, quoteId) {
+        const quoteElement = document.getElementById(quoteId);
+        if (quoteElement.style.display === 'none') {
+            quoteElement.style.display = 'block';
+            buttonElement.innerText = 'Close';
+        } else {
+            quoteElement.style.display = 'none';
+            buttonElement.innerText = 'Open';
+        }
+    }
+</script>
+
 @code
 {
+    private static readonly MarkdownPipeline MarkdownPipeline = new MarkdownPipelineBuilder()
+        .UseAdvancedExtensions()
+        .UsePrism()
+        .Build();
 
     private bool _disabled = false;
+
+    private bool _afterMessage = false;
 
     private List<Message> Messages { get; set; } = new List<Message>();
 
@@ -83,6 +146,22 @@
         SetSendButtonEnabled();
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        await JS.InvokeVoidAsync("Prism.highlightAll");
+        if (firstRender || _afterMessage)
+        {
+            await GoToBottom();
+            _afterMessage = false;
+        }
+    }
+
+    private async Task GoToBottom()
+    {
+        await JS.InvokeVoidAsync("goToBottom");
+    }
+
     private async Task SendMessage()
     {
         if (string.IsNullOrWhiteSpace(TextAreaText))
@@ -92,14 +171,18 @@
         }
         SetSendButtonDisable();
         Messages.Add(new Message
-        {
-            Content = TextAreaText,
-            Created = DateTime.Now,
-            MessageType = Message.TypeHuman
-        });
-        var chatResponse = await ChatService.ChatResponse(State.CurrentChat.Id, TextAreaText);
+            {
+                Content = TextAreaText,
+                Created = DateTime.Now,
+                MessageType = Message.TypeHuman
+            });
+        var msg = TextAreaText;
+        TextAreaText = "";
+        _afterMessage = true;
+        var chatResponse = await ChatService.ChatResponse(State.CurrentChat!.Id, msg);
         Messages.Add(chatResponse);
         SetSendButtonEnabled();
+        _afterMessage = true;
     }
 
     private void SetSendButtonDisable()
