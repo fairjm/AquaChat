@@ -195,11 +195,12 @@
         SetSendButtonDisable();
 
         var msg = TextAreaText;
-
+        TextAreaText = "";
         var humanMessage = await ChatService.SaveHumanMessage(State.CurrentChat!.Id, msg);
         Messages.Add(humanMessage);
-        TextAreaText = "";
         _afterMessage = true;
+        StateHasChanged();
+
         var chatResponse = await ChatService.ChatResponse(State.CurrentChat!.Id, msg);
         Messages.Add(chatResponse);
         _isLoading = false;
@@ -216,7 +217,6 @@
     {
         _disabled = false;
     }
-
 
     private async Task DeleteMessage(long itemId, string? itemContent)
     {

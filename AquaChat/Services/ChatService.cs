@@ -70,7 +70,7 @@ public class ChatService
 
     public async Task<Message> SaveHumanMessage(long chatId, string userInput)
     {
-        Message humanMessage = new Message
+        var humanMessage = new Message
         {
             ChatId = chatId,
             MessageType = Message.TypeHuman,
@@ -80,8 +80,7 @@ public class ChatService
             Created = DateTime.Now
         };
 
-        await _messageDao.SaveNewMessage(humanMessage);
-        return humanMessage;
+        return await _messageDao.SaveNewMessage(humanMessage);
     }
 
     public async Task<Message> ChatResponse(long chatId, string userInput)
