@@ -534,16 +534,20 @@ video {
     --tw-backdrop-sepia:;
 }
 
-.absolute {
-    position: absolute;
-}
-
 .fixed {
     position: fixed;
 }
 
+.absolute {
+    position: absolute;
+}
+
 .relative {
     position: relative;
+}
+
+.bottom-0 {
+    bottom: 0px;
 }
 
 .bottom-5 {
@@ -562,6 +566,10 @@ video {
     right: 0.25rem;
 }
 
+.top-0 {
+    top: 0px;
+}
+
 .top-1 {
     top: 0.25rem;
 }
@@ -569,6 +577,10 @@ video {
 .mx-4 {
     margin-left: 1rem;
     margin-right: 1rem;
+}
+
+.mb-1 {
+    margin-bottom: 0.25rem;
 }
 
 .mb-2 {
@@ -583,8 +595,8 @@ video {
     margin-right: 0.5rem;
 }
 
-.mb-1 {
-    margin-bottom: 0.25rem;
+.mt-1 {
+    margin-top: 0.25rem;
 }
 
 .block {
@@ -609,6 +621,10 @@ video {
 
 .resize-none {
     resize: none;
+}
+
+.flex-row-reverse {
+    flex-direction: row-reverse;
 }
 
 .flex-col {
@@ -637,11 +653,6 @@ video {
 
 .rounded-xl {
     border-radius: 0.75rem;
-}
-
-.rounded-r-xl {
-    border-top-right-radius: 0.75rem;
-    border-bottom-right-radius: 0.75rem;
 }
 
 .border {
@@ -719,6 +730,11 @@ video {
     color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
+.text-gray-500 {
+    --tw-text-opacity: 1;
+    color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
 .text-white {
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -765,6 +781,23 @@ video {
 .backdrop-filter {
     -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
     backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+.hover\:opacity-100:hover {
+    opacity: 1;
+}
+
+.hover\:fill-red-200:hover {
+    fill: #fecaca;
+}
+
+.hover\:fill-red-700:hover {
+    fill: #b91c1c;
+}
+
+.hover\:text-red-500:hover {
+    --tw-text-opacity: 1;
+    color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 
 .focus\:ring:focus {

@@ -36,8 +36,15 @@ public class MessageDao
 
     public async Task<Message> SaveNewMessage(Message message)
     {
-        var id = await _connection.InsertAsync(message);
+        await _connection.InsertAsync(message);
         return await _connection.GetAsync<Message>(message.Id);
+    }
+
+    public async Task DeleteMessagesById(long id)
+    {
+        await _connection.Table<Message>()
+            .Where(e => e.Id == id)
+            .DeleteAsync();
     }
 
     public async Task DeleteMessagesByChatId(long chatId)

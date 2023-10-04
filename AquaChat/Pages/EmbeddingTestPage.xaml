@@ -3,9 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AquaChat.Pages.EmbeddingTestPage"
              Title="EmbeddingTestPage">
+
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="MinimumHeightRequest" Value="30"/>
+            <Setter Property="MinimumWidthRequest" Value="30"/>
+        </Style>
+    </ContentPage.Resources>
+
     <Grid 
         RowSpacing="5"
-        RowDefinitions="*,auto,10,*,auto,*,auto"
+        RowDefinitions="*,auto,5,*,auto,*,auto"
         Padding="20,0,20,10">
         <Editor 
             Grid.Row="0"
@@ -13,7 +24,6 @@
                 />
         <Button
             Grid.Row="1"
-            HeightRequest="20"
                 Text="Add Embedding"
                 Clicked="Button_OnClicked" />
         <BoxView 

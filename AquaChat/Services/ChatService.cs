@@ -39,7 +39,11 @@ public class ChatService
         await _chatDao.DeleteAsync(chatId);
         await _chatConfigDao.DeleteByChatId(chatId);
         await _messageDao.DeleteMessagesByChatId(chatId);
+    }
 
+    public async Task DeleteMessage(long messageId)
+    {
+        await _messageDao.DeleteMessagesById(messageId);
     }
 
     public async Task<ChatConfig> GetChatConfig(long chatId)
@@ -62,6 +66,22 @@ public class ChatService
         };
         await _chatConfigDao.SaveOrReplaceConfig(chatConfig);
         return chatConfig;
+    }
+
+    public async Task<Message> SaveHumanMessage(long chatId, string userInput)
+    {
+        Message humanMessage = new Message
+        {
+            ChatId = chatId,
+            MessageType = Message.TypeHuman,
+            Content = userInput,
+            ReferenceContent = null,
+            ExtraContent = null,
+            Created = DateTime.Now
+        };
+
+        await _messageDao.SaveNewMessage(humanMessage);
+        return humanMessage;
     }
 
     public async Task<Message> ChatResponse(long chatId, string userInput)
@@ -138,17 +158,6 @@ ChatBot:";
             ExtraContent = null,
             Created = DateTime.Now
         };
-        Message humanMessage = new Message
-        {
-            ChatId = chatId,
-            MessageType = Message.TypeHuman,
-            Content = userInput,
-            ReferenceContent = null,
-            ExtraContent = null,
-            Created = DateTime.Now
-        };
-
-        await _messageDao.SaveNewMessage(humanMessage);
         return await _messageDao.SaveNewMessage(message);
     }
 }

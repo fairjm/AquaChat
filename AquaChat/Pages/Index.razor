@@ -4,6 +4,7 @@
 @using AquaChat.Models
 @using Markdig
 @using Markdig.Prism
+@using System.Diagnostics
 @inject ChatService ChatService
 @inject ChatMessageState State
 @inject IJSRuntime JS
@@ -25,7 +26,21 @@
 
     .oi {
         font-size: 1.5rem;
-        color: gray; 
+        color: gray;
+    }
+
+    @@keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .loading {
+        animation: spin 1s cubic-bezier(0.39, 0.575, 0.565, 1) infinite;
     }
 </style>
 
@@ -34,27 +49,23 @@
 
     @foreach (var item in Messages)
     {
-        if (item.ReferenceContent is not null)
-        {
-            <!-- 带有引用的消息 -->
-            <div class="mb-2 p-2 rounded-lg bg-white text-black w-full shadow-lg relative backdrop-blur">
-                <button onclick="toggleQuote(this, 'quote1')"
-                        class="block mb-1 top-1 right-1 bg-black text-white px-2 py-1 rounded opacity-75">
-                    Open
+        <div class="mb-2 p-2 rounded-lg bg-gray-100 text-black w-full shadow-lg backdrop-blur">
+            @if (item.MessageType == Message.TypeAi)
+            {
+                <span style="font-size: 1.3rem">🤖</span>
+            }
+            @((MarkupString)Markdown.ToHtml(item.Content ?? "", MarkdownPipeline))
+
+            <div class="flex flex-row-reverse hover:fill-red-700 hover:opacity-100 opacity-50">
+                <button @onclick="() => DeleteMessage(item.Id, item.Content)">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                         viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @@fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                        <path
+                            d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.2-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z" />
+                    </svg>
                 </button>
-                <div id="quote-@item.Id" class="mb-2 p-2 border-l-4 border-gray-400 bg-gray-200 text-black italic"
-                     style="display: none;">
-                    @item.ReferenceContent
-                </div>
-                @((MarkupString)Markdown.ToHtml(item.Content ?? "", MarkdownPipeline))
             </div>
-        }
-        else
-        {
-            <div class="mb-2 p-2 rounded-lg bg-gray-100 text-black w-full shadow-lg backdrop-blur">
-                @((MarkupString)Markdown.ToHtml(item.Content ?? "", MarkdownPipeline))
-            </div>
-        }
+        </div>
     }
 </div>
 
@@ -62,8 +73,15 @@
     <div class="flex items-center border rounded-xl overflow-hidden">
         <textarea id="input-text" class="flex-1 p-2 resize-none outline-none focus:ring focus:ring-gray-400"
                   rows="1" placeholder="input something..." @bind="TextAreaText"></textarea>
-        <button class="bg-black text-white rounded-xl px-4 py-2 shadow-md mr-2 opacity-75" disabled="@_disabled" @onclick="SendMessage">
-            ➤
+        <button class="text-white rounded-xl px-4 py-2 shadow-md mr-2 opacity-75" disabled="@_disabled" @onclick="SendMessage">
+            @if (!_isLoading)
+            {
+                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @@fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M16.1 260.2c-22.6 12.9-20.5 47.3 3.6 57.3L160 376V479.3c0 18.1 14.6 32.7 32.7 32.7c9.7 0 18.9-4.3 25.1-11.8l62-74.3 123.9 51.6c18.9 7.9 40.8-4.5 43.9-24.7l64-416c1.9-12.1-3.4-24.3-13.5-31.2s-23.3-7.5-34-1.4l-448 256zm52.1 25.5L409.7 90.6 190.1 336l1.2 1L68.2 285.7zM403.3 425.4L236.7 355.9 450.8 116.6 403.3 425.4z" /></svg>
+            }
+            else
+            {
+                <svg class="@LoadingStyle" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @@fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M142.9 142.9c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5c0 0 0 0 0 0H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5c7.7-21.8 20.2-42.3 37.8-59.8zM16 312v7.6 .7V440c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2l41.6-41.6c87.6 86.5 228.7 86.2 315.8-1c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.2 62.2-162.7 62.5-225.3 1L185 329c6.9-6.9 8.9-17.2 5.2-26.2s-12.5-14.8-22.2-14.8H48.4h-.7H40c-13.3 0-24 10.7-24 24z" /></svg>
+            }
         </button>
     </div>
 </div>
@@ -124,9 +142,13 @@
 
     private bool _disabled = false;
 
+    private bool _isLoading = false;
+
     private bool _afterMessage = false;
 
     private List<Message> Messages { get; set; } = new List<Message>();
+
+    string LoadingStyle => _isLoading ? "loading" : "";
 
     private string? TextAreaText { get; set; }
 
@@ -169,18 +191,18 @@
             await Toast.Make("please input something").Show();
             return;
         }
+        _isLoading = true;
         SetSendButtonDisable();
-        Messages.Add(new Message
-            {
-                Content = TextAreaText,
-                Created = DateTime.Now,
-                MessageType = Message.TypeHuman
-            });
+
         var msg = TextAreaText;
+
+        var humanMessage = await ChatService.SaveHumanMessage(State.CurrentChat!.Id, msg);
+        Messages.Add(humanMessage);
         TextAreaText = "";
         _afterMessage = true;
         var chatResponse = await ChatService.ChatResponse(State.CurrentChat!.Id, msg);
         Messages.Add(chatResponse);
+        _isLoading = false;
         SetSendButtonEnabled();
         _afterMessage = true;
     }
@@ -196,4 +218,27 @@
     }
 
 
+    private async Task DeleteMessage(long itemId, string? itemContent)
+    {
+        string displayMessage;
+        if (itemContent?.Length > 50)
+        {
+            displayMessage = itemContent?[..50] + "... ...";
+        }
+        else
+        {
+            displayMessage = itemContent ?? "";
+        }
+        var deleted = await Application.Current.MainPage.DisplayAlert("Delete the Message?",
+            $"Do you want to delete the message:\n{displayMessage}",
+            "Delete",
+            "Cancel");
+        Debug.WriteLine($"DeleteMessage - {itemId}. delete:{deleted}");
+
+        if (deleted)
+        {
+            await ChatService.DeleteMessage(itemId);
+        }
+        Messages.RemoveAll(e => e.Id == itemId);
+    }
 }
