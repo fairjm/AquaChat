@@ -238,7 +238,7 @@
         if (deleted)
         {
             await ChatService.DeleteMessage(itemId);
+            Messages.RemoveAll(e => e.Id == itemId);
         }
-        Messages.RemoveAll(e => e.Id == itemId);
     }
 }

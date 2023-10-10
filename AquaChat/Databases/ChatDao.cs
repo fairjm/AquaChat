@@ -32,8 +32,8 @@ public class ChatDao
             LastMessage = "",
             Created = DateTime.Now
         };
-        var id = await _connection.InsertAsync(chat);
-        return await _connection.GetAsync<Chat>(id);
+        await _connection.InsertAsync(chat);
+        return chat;
     }
 
     public async Task DeleteAsync(long id)

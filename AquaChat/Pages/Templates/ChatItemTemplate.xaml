@@ -5,7 +5,25 @@
              xmlns:models="clr-namespace:AquaChat.Models"
              x:DataType="models:Chat">
 
-    <!-- can't add swipeView in collectionView https://github.com/dotnet/maui/issues/8168 -->
+    <ContentView.Resources>
+        <Style TargetType="Border">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="PointerOver">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="0.9"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+
+    </ContentView.Resources>
+
+        <!-- can't add swipeView in collectionView https://github.com/dotnet/maui/issues/8168 -->
     <!--<SwipeView>
         <SwipeView.LeftItems>
             <SwipeItems>
@@ -40,23 +58,61 @@
                     <Label        
                         FontSize="20"
                     Text="{Binding Title}"/>
-                    <Label         
+                    <Label
                     Text="{Binding LastMessage}"/>
                 </StackLayout>
-                <StackLayout Grid.Row="0" 
-                             Grid.Column="1">
-                    <Label 
-                    Grid.Row="0"
-                    FontSize="12"
-                    Text="{Binding Created}"/>
+                <Grid Grid.Row="0" 
+                      Grid.Column="1"
+                      ColumnDefinitions="*,10,*"
+                      RowDefinitions="20,*,10">
+                    <Label
+                        Grid.Row="0"
+                        Grid.ColumnSpan="3"
+                        FontSize="12"
+                        Text="{Binding Created}"/>
 
-                    <Button>
-                        <Button.ImageSource>
-                        <FontImageSource Glyph="&#xf30c;"
-                                         Size="44" />
-                        </Button.ImageSource>
-                    </Button>
-                </StackLayout>
+                    <Border 
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Padding="2">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="15" />
+                        </Border.StrokeShape>
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            FontSize="14"
+                            Text="{StaticResource IconEdit}"
+                            FontFamily="Fontello">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Tapped="OnEditTapped" 
+                                    NumberOfTapsRequired="1"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Border>
+
+                    <Border 
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Padding="2">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="15" />
+                        </Border.StrokeShape>
+                        <Label
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            FontSize="14"
+                            Text="{StaticResource IconTrash}"
+                            FontFamily="Fontello">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Tapped="OnTrashTapped" 
+                                    NumberOfTapsRequired="1"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Border>
+                </Grid>
             </Grid>
         </Frame>
     </StackLayout>

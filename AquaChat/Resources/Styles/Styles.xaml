@@ -52,7 +52,6 @@
                             <Setter Property="Opacity" Value="0.9"/>
                         </VisualState.Setters>
                     </VisualState>
-
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
