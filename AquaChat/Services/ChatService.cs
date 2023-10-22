@@ -8,7 +8,7 @@ namespace AquaChat.Services;
 
 public class ChatService
 {
-    private static readonly int LAST_MESSAGE_LEN = 150;
+    private static readonly int LastMessageLen = 150;
 
     private readonly ChatDao _chatDao;
     private readonly ChatConfigDao _chatConfigDao;
@@ -70,6 +70,12 @@ public class ChatService
         return chatConfig;
     }
 
+    public async Task<ChatConfig> SaveChatConfig(ChatConfig chatConfig)
+    {
+        await _chatConfigDao.SaveOrReplaceConfig(chatConfig);
+        return chatConfig;
+    }
+
     public async Task<Message> SaveHumanMessage(long chatId, string userInput)
     {
         var humanMessage = new Message
@@ -84,7 +90,7 @@ public class ChatService
 
         await _chatDao.Update(chatId, e =>
         {
-            e.LastMessage = userInput.Length > LAST_MESSAGE_LEN ? (userInput[0..LAST_MESSAGE_LEN] + "...") : userInput;
+            e.LastMessage = userInput.Length > LastMessageLen ? (userInput[0..LastMessageLen] + "...") : userInput;
         });
 
         return await _messageDao.SaveNewMessage(humanMessage);
@@ -132,7 +138,7 @@ ChatBot:";
         {
             var lastMessage = listLastN[0];
             // emmmm...we saved the human input before... no need to add it to history :(
-            if (lastMessage?.Content?.Equals(userInput) ?? false && lastMessage.MessageType == Message.TypeHuman)
+            if ((lastMessage?.Content?.Equals(userInput) ?? false) && lastMessage.MessageType == Message.TypeHuman)
             {
                 listLastN.RemoveAt(0);
             }
@@ -161,12 +167,9 @@ ChatBot:";
             }
             else
             {
-                title = await generateNewTitle(userInput);
+                title = await GenerateNewTitle(userInput);
             }
-            await _chatDao.Update(chatId, e =>
-            {
-                e.Title = title;
-            });
+            await UpdateChatTitle(chatId, title);
 
         }
 
@@ -191,12 +194,20 @@ ChatBot:";
         };
         await _chatDao.Update(chatId, e =>
         {
-            e.LastMessage = invokeAsyncResult.Length > LAST_MESSAGE_LEN ? (invokeAsyncResult[..LAST_MESSAGE_LEN] + "...") : invokeAsyncResult;
+            e.LastMessage = invokeAsyncResult.Length > LastMessageLen ? (invokeAsyncResult[..LastMessageLen] + "...") : invokeAsyncResult;
         });
         return await _messageDao.SaveNewMessage(message);
     }
 
-    public async Task<string> generateNewTitle(string userInput)
+    public Task UpdateChatTitle(long chatId, string title)
+    {
+        return _chatDao.Update(chatId, e =>
+        {
+            e.Title = title;
+        });
+    }
+
+    public async Task<string> GenerateNewTitle(string userInput)
     {
         var kernel = SemanticKernelHolder.GetKernel() ?? throw new InvalidOperationException("check openai settings");
 

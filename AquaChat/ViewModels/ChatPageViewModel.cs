@@ -25,6 +25,11 @@ public partial class ChatPageViewModel : ObservableObject
             await RemoveChat(e.ChatId);
         });
 
+        WeakReferenceMessenger.Default.Register<ChatUpdateTitleMessage>(this, async (sender, e) =>
+        {
+            await UpdateTitle(e.ChatId, e.Title);
+        });
+
     }
 
     public async Task Refresh()
@@ -45,5 +50,18 @@ public partial class ChatPageViewModel : ObservableObject
     {
         await _chatService.DeleteChat(chatId);
         await Refresh();
+    }
+
+    private async Task UpdateTitle(long chatId, string title)
+    {
+        await _chatService.UpdateChatTitle(chatId, title);
+
+        var c = from chat in Chats
+            where chat.Id == chatId
+            select chat;
+        foreach (var chat in c)
+        {
+            chat.Title = title;
+        }
     }
 }

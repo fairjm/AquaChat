@@ -2,9 +2,12 @@ using System;
 using System.Diagnostics;
 using AquaChat.Messages;
 using AquaChat.Models;
+using AquaChat.Pages.Popups;
+using AquaChat.Services;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core.Views;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Maui.Views;
 
 namespace AquaChat.Pages.Templates;
 
@@ -44,9 +47,12 @@ public partial class ChatItemTemplate : ContentView
             Debug.WriteLine($"item is null");
             return;
         }
+
+        var editorPopup = new ChatTitleEditorPopup(item.Id, item.Title ?? "");
+        await Shell.Current.CurrentPage.ShowPopupAsync(editorPopup);
     }
 
-    private async void OnTrashTapped(object? sender, TappedEventArgs e)
+    private void OnTrashTapped(object? sender, TappedEventArgs e)
     {
         var item = (Chat?)((sender as Label)?.BindingContext);
         if (item is null)

@@ -5,7 +5,15 @@
              xmlns:vm="using:AquaChat.ViewModels"
              Title="Settings"
              x:DataType="vm:SettingPageViewModel">
-    <Grid ColumnDefinitions="200,*" RowDefinitions="auto,auto,auto,auto,auto,20,auto" RowSpacing="5" Padding="10,0,0,10" HorizontalOptions="Center">
+
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="End"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+    </ContentPage.Resources>
+    <Grid ColumnDefinitions="100,*" RowDefinitions="auto,auto,auto,auto,auto,20,auto" ColumnSpacing="10" RowSpacing="5" Padding="10,0,10,10" HorizontalOptions="Center">
         <Label 
             Grid.Row="0"
             Grid.Column="0"
@@ -14,7 +22,7 @@
         <Entry 
             Grid.Row="0"
             Grid.Column="1"
-            WidthRequest="300"
+            WidthRequest="200"
             HorizontalOptions="Start"
             Text="{Binding OpenAiPrefix}"
             />
@@ -33,7 +41,10 @@
             Text="{Binding Secret}"
         />
 
-        <Label 
+        <Label
+            VerticalTextAlignment="Center"
+            HorizontalOptions="End"
+            FontSize="16"
             Grid.Row="2"
             Grid.Column="0"
             Text="Model" />
@@ -41,7 +52,7 @@
         <Entry 
             Grid.Row="2"
             Grid.Column="1"
-            WidthRequest="300"
+            WidthRequest="200"
             HorizontalOptions="Start"
             Text="{Binding Model}"
         />
