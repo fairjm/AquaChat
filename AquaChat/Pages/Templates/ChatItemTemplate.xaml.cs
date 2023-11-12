@@ -25,7 +25,6 @@ public partial class ChatItemTemplate : ContentView
         {
             return;
         }
-        await Toast.Make("id:" + item.Id).Show();
         var dictionary = new Dictionary<string, object>()
         {
             { "Chat", item }
@@ -52,7 +51,7 @@ public partial class ChatItemTemplate : ContentView
         await Shell.Current.CurrentPage.ShowPopupAsync(editorPopup);
     }
 
-    private void OnTrashTapped(object? sender, TappedEventArgs e)
+    private async void OnTrashTapped(object? sender, TappedEventArgs e)
     {
         var item = (Chat?)((sender as Label)?.BindingContext);
         if (item is null)
@@ -61,10 +60,17 @@ public partial class ChatItemTemplate : ContentView
             return;
         }
 
-        WeakReferenceMessenger.Default.Send(new ChatDeletionMessage()
+        var deleted = await Application.Current.MainPage.DisplayAlert("Delete the Conversation?",
+            $"Do you want to delete the conversation: {item.Title}",
+            "Delete",
+            "Cancel");
+
+        if (deleted)
         {
-            ChatId = item.Id
-        });
-        //await Toast.Make("trash id:" + item.Id).Show();
+            WeakReferenceMessenger.Default.Send(new ChatDeletionMessage()
+            {
+                ChatId = item.Id
+            });
+        }
     }
 }

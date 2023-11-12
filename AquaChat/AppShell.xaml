@@ -8,13 +8,18 @@
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
-        <ShellContent
-        Title="Chat"
-        ContentTemplate="{DataTemplate pages:ChatPage}"
-        Route="ChatPage" />
-        <ShellContent
-            Title="Setting"
-            ContentTemplate="{DataTemplate pages:SettingPage}"
-            Route="SettingPage" />
+        <Tab Title="Chat" Icon="chatbox_outline.png">
+            <ShellContent
+                Title="Chat"
+                ContentTemplate="{DataTemplate pages:ChatPage}"
+                Route="ChatPage" />
+        </Tab>
+
+        <Tab Title="Setting" Icon="hammer_outline.png">
+            <ShellContent
+                Title="Setting"
+                ContentTemplate="{DataTemplate pages:SettingPage}"
+                Route="SettingPage" />
+        </Tab>
     </TabBar>
 </Shell>

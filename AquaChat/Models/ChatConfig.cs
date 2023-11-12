@@ -19,7 +19,7 @@ public partial class ChatConfig : ObservableObject
     [ObservableProperty]
     private int? _lastMessageNum;
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private int? _maxTokens;
 
     [ObservableProperty]

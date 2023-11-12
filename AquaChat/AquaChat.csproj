@@ -49,6 +49,8 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Fonts\fontello.ttf" />
+	  <None Remove="Resources\Images\chatbox_outline.svg" />
+	  <None Remove="Resources\Images\hammer_outline.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

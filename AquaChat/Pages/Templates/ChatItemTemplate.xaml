@@ -35,7 +35,7 @@
         </SwipeView.LeftItems>-->
     <StackLayout HeightRequest="100">
         <Frame CornerRadius="15" HeightRequest="90" Padding="0">
-            <Grid RowDefinitions="*" ColumnDefinitions="*, 100" Padding="20,10,10,0">
+            <Grid RowDefinitions="*" ColumnDefinitions="*, 100" Padding="10,10,10,0">
                 <Grid.GestureRecognizers>
                     <TapGestureRecognizer 
                         Tapped="OnItemTapped"  

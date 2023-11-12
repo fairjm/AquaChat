@@ -3,7 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AquaChat"
              x:Class="AquaChat.Pages.ChatMessagePage"
-             Title="ChatMessagePage">
+             Title="Messages"
+             >
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Setting" Clicked="SettingBarOnClick">
+                <ToolbarItem.IconImageSource>
+                    <FontImageSource 
+                        Glyph="{StaticResource IconGear}"
+                        FontFamily="Fontello"
+                        />
+                </ToolbarItem.IconImageSource>
+            </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <!--<VerticalStackLayout>-->
 
     <BlazorWebView
