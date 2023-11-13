@@ -120,9 +120,9 @@ ChatBot:";
             Completion =
             {
                 MaxTokens = chatConfig.MaxTokens,
-                Temperature = chatConfig.Temperature ?? 0,
-                FrequencyPenalty = chatConfig.FrequencyPenalty ?? 0,
-                PresencePenalty = chatConfig.PresencePenalty ?? 0,
+                Temperature = Math.Round(chatConfig.Temperature ?? 0, 2),
+                FrequencyPenalty = Math.Round(chatConfig.FrequencyPenalty ?? 0, 2),
+                PresencePenalty = Math.Round(chatConfig.PresencePenalty ?? 0, 2),
                 //StopSequences = new List<string>() {"ChatBot:", "User: "}
 
             }

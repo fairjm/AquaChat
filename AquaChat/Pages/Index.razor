@@ -42,6 +42,11 @@
     .loading {
         animation: spin 1s cubic-bezier(0.39, 0.575, 0.565, 1) infinite;
     }
+
+    textarea#input-text {
+        max-height: 5em;
+    }
+
 </style>
 
 <!-- 聊天窗口容器 -->
@@ -71,7 +76,7 @@
 
 <div class="fixed bottom-5 left-0 right-0 p-2 bg-white rounded-xl shadow-xl mx-4 backdrop-blur">
     <div class="flex items-center border rounded-xl overflow-hidden">
-        <textarea id="input-text" class="flex-1 p-2 resize-none outline-none focus:ring focus:ring-gray-400"
+        <textarea id="input-text" class="flex-1 p-2 resize-none outline-none"
                   rows="1" placeholder="input something..." @bind="TextAreaText"></textarea>
         <button class="text-white rounded-xl px-4 py-2 shadow-md mr-2 opacity-75" disabled="@_disabled" @onclick="SendMessage">
             @if (!_isLoading)
@@ -94,10 +99,9 @@
     // 获取按钮元素
     const btnTop = document.getElementById('btnTop');
     const btnBottom = document.getElementById('btnBottom');
+    const inputTextarea = document.getElementById('input-text');
 
-    // 滚动事件处理
     window.addEventListener('scroll', function () {
-        // 根据滚动位置显示/隐藏按钮
         if (document.documentElement.scrollTop > 200) {
             btnTop.style.display = 'block';
         } else {
@@ -131,6 +135,11 @@
             buttonElement.innerText = 'Open';
         }
     }
+
+    inputTextarea.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
 </script>
 
 @code
