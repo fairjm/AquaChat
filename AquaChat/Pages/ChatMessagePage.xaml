@@ -18,7 +18,7 @@
     <!--<VerticalStackLayout>-->
 
     <BlazorWebView
-            x:Name="blazorWebView" HostPage="wwwroot/index.html">
+            x:Name="blazorWebView" HostPage="wwwroot/index.html" StartPath="/">
         <BlazorWebView.RootComponents>
             <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
         </BlazorWebView.RootComponents>

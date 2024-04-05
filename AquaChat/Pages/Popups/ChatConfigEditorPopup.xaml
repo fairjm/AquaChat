@@ -4,81 +4,77 @@
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                xmlns:models="clr-namespace:AquaChat.Models"
                x:Class="AquaChat.Pages.Popups.ChatConfigEditorPopup"
-               x:DataType="models:ChatConfig">
+               x:DataType="models:ChatConfig"
+               Size="500,500">
 
-    <Frame>
-        <ScrollView>
-            <VerticalStackLayout>
-                <Label 
+
+    <ScrollView Padding="5" BackgroundColor="White">
+        <VerticalStackLayout>
+            <Label 
                     Text="System Message:"
                     FontSize="14"
-                    TextColor="Grey"
                 />
-                <Editor
+            <Editor
                     HeightRequest="100"
                     Text="{Binding SystemMessage}"
                 />
-                <Label 
+            <Label 
                     Text="Message Window Size:"
                     FontSize="14"
-                    TextColor="Grey"
                 />
-                <Entry
+            <Entry
                     Keyboard="Numeric"
                     Text="{Binding LastMessageNum}"
                 />
-                <Label 
+            <Label 
                     Text="Max Tokens:"
                     FontSize="14"
-                    TextColor="Grey"
                 />
-                <Entry
+            <Entry
                     Keyboard="Numeric"
                     Text="{Binding MaxTokens}"
                 />
-                <Label 
+            <Label 
                     Text="{Binding Temperature, StringFormat='Temperature: {0:F2}'}"
                     FontSize="14"
-                    TextColor="Grey"
                 />
-                <Slider
+            <Slider
                     Minimum="0"
                     Maximum="2"
                     Value="{Binding Temperature}"
                 />
-                <Label 
+            <Label 
                     Text="{Binding PresencePenalty, StringFormat='PresencePenalty: {0:F2}'}"
                     FontSize="14"
                     TextColor="Grey"
                 />
-                <Slider
+            <Slider
                     Minimum="-2.0"
                     Maximum="2"
                     Value="{Binding PresencePenalty}"
                 />
-                <Label 
+            <Label 
                     Text="{Binding FrequencyPenalty, StringFormat='FrequencyPenalty: {0:F2}'}"
                     FontSize="14"
                     TextColor="Grey"
                 />
-                <Slider
+            <Slider
                     Minimum="-2.0"
                     Maximum="2"
                     Value="{Binding FrequencyPenalty}"
                 />
-                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,10,0,0">
-                    <Button 
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,10,0,0">
+                <Button 
                     Grid.Column="0"
                     Text="Cancel" Margin="0,0,10,0" Clicked="CancelButtonOnClicked"/>
-                    <Button 
+                <Button 
                     Grid.Column="1"
                     BackgroundColor="DarkGreen"
                     Clicked="SaveButtonOnClicked"
                     Text="Save" />
-                </Grid>
-            </VerticalStackLayout>
-        </ScrollView>
-    </Frame>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 
 
 </toolkit:Popup>

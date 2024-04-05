@@ -3,7 +3,6 @@
 @using CommunityToolkit.Maui.Alerts
 @using AquaChat.Models
 @using Markdig
-@using Markdig.Prism
 @using System.Diagnostics
 @inject ChatService ChatService
 @inject ChatMessageState State
@@ -59,7 +58,8 @@
             {
                 <span style="font-size: 1.3rem">🤖</span>
             }
-            @((MarkupString)Markdown.ToHtml(item.Content ?? "", MarkdownPipeline))
+            @* @item.Content *@
+            @((MarkupString)Markdown.ToHtml(item.Content ?? ""))
 
             <div class="flex flex-row-reverse hover:fill-red-700 hover:opacity-100 opacity-50">
                 <button @onclick="() => DeleteMessage(item.Id, item.Content)">
@@ -144,10 +144,6 @@
 
 @code
 {
-    private static readonly MarkdownPipeline MarkdownPipeline = new MarkdownPipelineBuilder()
-        .UseAdvancedExtensions()
-        .UsePrism()
-        .Build();
 
     private bool _disabled = false;
 

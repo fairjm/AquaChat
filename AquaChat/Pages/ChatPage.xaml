@@ -6,7 +6,7 @@
              xmlns:vm="clr-namespace:AquaChat.ViewModels"
              xmlns:model="clr-namespace:AquaChat.Models"
              x:DataType="vm:ChatPageViewModel"
-             Title="ChatPage">
+             Title="chat">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -21,32 +21,31 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddNewTaskCommand}">
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="auto,*" RowSpacing="10">
-        <Button 
-            Grid.Row="0"
-            Text="New Chat"
-            Margin="10,10,10,0"
-            CornerRadius="20"
-            Command="{Binding AddNewTaskCommand}"
-            />
-
-        <Grid Grid.Row="1" RowDefinitions="*">
-            <BoxView
-            Style="{StaticResource RecentChatAdornerStyle}"/>
-            <CollectionView
+    <CollectionView
                 x:Name="ChatCollectionView"
                 VerticalScrollBarVisibility="Default"
-                Grid.Row="0"
+                Grid.Row="1"
                 ItemsSource="{Binding Chats}" 
                 Style="{StaticResource RecentChatCollectionStyle}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <templates:ChatItemTemplate />
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </Grid>
-
-    </Grid>
+        <CollectionView.Header>
+            <StackLayout BackgroundColor="#FFFFFF">
+                <Label Margin="10,0,0,0"
+                   Text="Chats"
+                   FontSize="14" />
+            </StackLayout>
+        </CollectionView.Header>
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout Orientation="Vertical"  ItemSpacing="5"/>
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <templates:ChatItemTemplate />
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 </ContentPage>
