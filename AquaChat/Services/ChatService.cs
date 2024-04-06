@@ -23,34 +23,34 @@ public class ChatService
 
     public async Task<Chat> NewChat()
     {
-        return await _chatDao.CreateNewItem();
+        return await _chatDao.CreateNewItem().ConfigureAwait(false);
     }
 
     public async Task<List<Chat>> ListChatsAsync()
     {
-        return await _chatDao.ListChatsAsync();
+        return await _chatDao.ListChatsAsync().ConfigureAwait(false);
     }
 
     public async Task<List<Message>> ListChatMessages(long chatId)
     {
-        return await _messageDao.ListMessageByChatIdAsync(chatId);
+        return await _messageDao.ListMessageByChatIdAsync(chatId).ConfigureAwait(false);
     }
 
     public async Task DeleteChat(long chatId)
     {
-        await _chatDao.DeleteAsync(chatId);
+        await _chatDao.DeleteAsync(chatId).ConfigureAwait(false);
         await _chatConfigDao.DeleteByChatId(chatId);
         await _messageDao.DeleteMessagesByChatId(chatId);
     }
 
     public async Task DeleteMessage(long messageId)
     {
-        await _messageDao.DeleteMessagesById(messageId);
+        await _messageDao.DeleteMessagesById(messageId).ConfigureAwait(false);
     }
 
     public async Task<ChatConfig> GetChatConfig(long chatId)
     {
-        var chatConfig = await _chatConfigDao.GetByChatId(chatId);
+        var chatConfig = await _chatConfigDao.GetByChatId(chatId).ConfigureAwait(false);
         if (chatConfig is not null)
         {
             return chatConfig;
@@ -72,7 +72,7 @@ public class ChatService
 
     public async Task<ChatConfig> SaveChatConfig(ChatConfig chatConfig)
     {
-        await _chatConfigDao.SaveOrReplaceConfig(chatConfig);
+        await _chatConfigDao.SaveOrReplaceConfig(chatConfig).ConfigureAwait(false);
         return chatConfig;
     }
 
@@ -91,7 +91,7 @@ public class ChatService
         await _chatDao.Update(chatId, e =>
         {
             e.LastMessage = userInput.Length > LastMessageLen ? (userInput[0..LastMessageLen] + "...") : userInput;
-        });
+        }).ConfigureAwait(false);
 
         return await _messageDao.SaveNewMessage(humanMessage);
     }
@@ -128,7 +128,7 @@ ChatBot:";
             }
         };
 
-        var listLastN = await _messageDao.ListLastN(chatId, chatConfig.LastMessageNum ?? 10);
+        var listLastN = await _messageDao.ListLastN(chatId, chatConfig.LastMessageNum ?? 10).ConfigureAwait(false);
         string histories;
         if (listLastN.Count == 0)
         {
@@ -230,7 +230,7 @@ you should just return the title itself only.
         var semanticFunction = kernel.CreateSemanticFunction(skPrompt);
         var newContext = kernel.CreateNewContext();
         newContext.Variables["userInput"] = userInput;
-        var invokeAsync = await semanticFunction.InvokeAsync(newContext);
+        var invokeAsync = await semanticFunction.InvokeAsync(newContext).ConfigureAwait(false);
         return invokeAsync.Result;
     }
 }

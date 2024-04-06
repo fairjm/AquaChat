@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AquaChat.Models;
 using AquaChat.Services;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -35,15 +36,22 @@ public partial class SettingPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void SaveConfig()
+    public async Task TabUrl(string url)
+    {
+        await Launcher.OpenAsync(url);
+    }
+
+    [RelayCommand]
+    public async Task SaveConfig()
     {
         var config = new AppConfig
         {
             Model = Model,
-            OpenAiPrefix = OpenAiPrefix,
+            OpenAiPrefix = OpenAiPrefix?.Trim(),
             Secret = Secret
         };
         _semanticKernelConfigService.UpdateConfig(config);
+        await Toast.Make("Saved").Show();
     }
 
 

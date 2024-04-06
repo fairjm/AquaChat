@@ -26,26 +26,36 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
-    <CollectionView
+    <Grid RowDefinitions="*" ColumnDefinitions="*">
+        <Image
+            Grid.Row="0"
+            Grid.Column="0"
+            Source="homebg_blur.jpg"
+            Aspect="AspectFill"
+            />
+        <CollectionView
+                Grid.Row="0"
+                Grid.Column="0"
                 x:Name="ChatCollectionView"
                 VerticalScrollBarVisibility="Default"
-                Grid.Row="1"
                 ItemsSource="{Binding Chats}" 
                 Style="{StaticResource RecentChatCollectionStyle}">
-        <CollectionView.Header>
-            <StackLayout BackgroundColor="#FFFFFF">
-                <Label Margin="10,0,0,0"
-                   Text="Chats"
-                   FontSize="14" />
-            </StackLayout>
-        </CollectionView.Header>
-        <CollectionView.ItemsLayout>
-            <LinearItemsLayout Orientation="Vertical"  ItemSpacing="5"/>
-        </CollectionView.ItemsLayout>
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <templates:ChatItemTemplate />
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+            <CollectionView.Header>
+                <StackLayout>
+                    <Label Margin="10,0,0,0"
+                       BackgroundColor="#E0FFFFFF"
+                       Text="Chats"
+                       FontSize="14" />
+                </StackLayout>
+            </CollectionView.Header>
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"  ItemSpacing="5"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <templates:ChatItemTemplate />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

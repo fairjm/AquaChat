@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,9 @@ public class ProxyOpenAiHandler : HttpClientHandler
     {
         if (request.RequestUri != null && request.RequestUri.Host.Equals("api.openai.com", StringComparison.OrdinalIgnoreCase))
         {
-            request.RequestUri = new Uri($"{Prefix}{request.RequestUri.PathAndQuery}");
+            var newRequestUrl = $"{Prefix}{request.RequestUri.PathAndQuery}";
+            Debug.WriteLine($"SendAsync - new url: {newRequestUrl}");
+            request.RequestUri = new Uri($"{newRequestUrl}");
         }
         return base.SendAsync(request, cancellationToken);
     }

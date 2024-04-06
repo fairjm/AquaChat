@@ -7,8 +7,15 @@
                x:DataType="models:ChatConfig"
                Size="500,500">
 
-
     <ScrollView Padding="5" BackgroundColor="White">
+        <ScrollView.Shadow>
+            <Shadow 
+                Brush="Gray"
+                Offset="20,20"
+                Radius="10"
+                Opacity="0.6"
+                />
+        </ScrollView.Shadow>
         <VerticalStackLayout>
             <Label 
                     Text="System Message:"

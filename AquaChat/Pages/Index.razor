@@ -21,6 +21,15 @@
         right: 1rem;
         bottom: 5rem;
         z-index: 99;
+        opacity: 0.6;
+    }
+
+    #input-area {
+        opacity: 0.6;
+    }
+
+    #input-area:focus-within {
+        opacity: 1;
     }
 
     .oi {
@@ -43,6 +52,7 @@
     }
 
     textarea#input-text {
+        height: auto;
         max-height: 5em;
     }
 
@@ -53,14 +63,13 @@
 
     @foreach (var item in Messages)
     {
-        <div class="mb-2 p-2 rounded-lg bg-gray-100 text-black w-full shadow-lg backdrop-blur">
+        <div class="mb-2 p-2 rounded-lg text-black w-full shadow-lg backdrop-blur" style="background-color: #ffffff80;">
             @if (item.MessageType == Message.TypeAi)
             {
                 <span style="font-size: 1.3rem">🤖</span>
             }
             @* @item.Content *@
             @((MarkupString)Markdown.ToHtml(item.Content ?? ""))
-
             <div class="flex flex-row-reverse hover:fill-red-700 hover:opacity-100 opacity-50">
                 <button @onclick="() => DeleteMessage(item.Id, item.Content)">
                     <svg xmlns="http://www.w3.org/2000/svg" height="1em"
@@ -74,7 +83,7 @@
     }
 </div>
 
-<div class="fixed bottom-5 left-0 right-0 p-2 bg-white rounded-xl shadow-xl mx-4 backdrop-blur">
+<div id="input-area" class="fixed bottom-5 left-0 right-0 p-2 bg-white rounded-xl shadow-xl mx-4 backdrop-blur">
     <div class="flex items-center border rounded-xl overflow-hidden">
         <textarea id="input-text" class="flex-1 p-2 resize-none outline-none"
                   rows="1" placeholder="input something..." @bind="TextAreaText"></textarea>
@@ -140,6 +149,10 @@
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
     });
+
+    function resetTextAreaHeight() {
+        inputTextarea.style.height = 'auto';
+    }
 </script>
 
 @code
@@ -189,6 +202,11 @@
         await JS.InvokeVoidAsync("goToBottom");
     }
 
+    private async Task ResetTextAreaHeight()
+    {
+        await JS.InvokeVoidAsync("resetTextAreaHeight");
+    }
+
     private async Task SendMessage()
     {
         if (string.IsNullOrWhiteSpace(TextAreaText))
@@ -205,6 +223,7 @@
         Messages.Add(humanMessage);
         _afterMessage = true;
         StateHasChanged();
+        await ResetTextAreaHeight();
 
         var chatResponse = await ChatService.ChatResponse(State.CurrentChat!.Id, msg);
         Messages.Add(chatResponse);

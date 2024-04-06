@@ -15,7 +15,7 @@
 		<ApplicationTitle>AquaChat</ApplicationTitle>
     <Nullable>enable</Nullable>
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.aquachat</ApplicationId>
+		<ApplicationId>io.github.fairjm.aquachat</ApplicationId>
 		<ApplicationIdGuid>ffc62a8e-8197-433a-98fc-8aa6cd8eaf91</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -45,10 +45,14 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\icon_resize.png" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+    <MauiSplashScreen Include="Resources\Splash\icon_resize.png">
+      <Resize>false</Resize>
+      <BaseSize>128,128</BaseSize>
+      <Color>#DFF5FF</Color>
+    </MauiSplashScreen>
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -62,9 +66,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Fonts\fontello.ttf" />
 	  <None Remove="Resources\Images\chatbox_outline.svg" />
 	  <None Remove="Resources\Images\hammer_outline.svg" />
+	  <None Remove="Resources\Images\homebg.jpg" />
+	  <None Remove="Resources\Images\homebg2.jpg" />
+	  <None Remove="Resources\Images\homebg_blur.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -72,13 +78,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
-    <PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.14" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="8.0.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Markdig" Version="0.33.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="Microsoft.SemanticKernel" Version="0.21.230828.2-preview" />
 		<PackageReference Include="Microsoft.SemanticKernel.Connectors.Memory.Sqlite" Version="0.21.230828.2-preview" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />

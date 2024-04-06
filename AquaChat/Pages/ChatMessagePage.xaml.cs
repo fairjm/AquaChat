@@ -38,6 +38,7 @@ public partial class ChatMessagePage : ContentPage
         base.OnAppearing();
         _chatMessageState.CurrentChat = CurrentChat;
         Debug.WriteLine($"ChatMessagePage OnAppearing. chatId:{CurrentChat.Id}");
+        Shell.SetTabBarIsVisible(this, false);
     }
 
     protected override void OnDisappearing()

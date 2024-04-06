@@ -60,13 +60,18 @@
         <Button 
             Text="Save"
             Grid.Row="3"
-            Grid.ColumnSpan="2"
+            Grid.Column="1"
+            WidthRequest="200"
+            HorizontalOptions="Start"
+            BackgroundColor="DarkGreen"
             Command="{Binding SaveConfigCommand}"
             />
-        <Button 
+        <Button
             Text="Cancel"
             Grid.Row="4"
-            Grid.ColumnSpan="2"
+            Grid.Column="1"
+            WidthRequest="200"
+            HorizontalOptions="Start"
             Command="{Binding RefreshCommand}"
         />
 
@@ -76,12 +81,30 @@
                  HeightRequest="1" 
                  HorizontalOptions="Fill"/>
 
-        <Button 
+        <!--<Button 
             Text="Embedding Test"
             Grid.Row="6"
             Grid.ColumnSpan="2"
             Clicked="Embedding_OnClicked"
-            />
+            />-->
 
+        <Label Grid.Row="6"
+               Grid.ColumnSpan="2" TextColor="Gray" FontSize="12">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="This app is developed by 夸宝想要躺平@bilibili for learning purposes only. The app does not charge any fees." />
+                    <Span Text="If you like this app, please give me a star." />
+                    <Span Text="click here"
+                  TextColor="Blue"
+                  TextDecorations="Underline">
+                        <Span.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TabUrlCommand}"
+                                          CommandParameter="https://github.com/fairjm/AquaChat" />
+                        </Span.GestureRecognizers>
+                    </Span>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+        
     </Grid>
 </ContentPage>
